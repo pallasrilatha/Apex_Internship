@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My First Webpage</title>
+  <style>
+    /* CSS Styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #0066cc;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    img {
+      width: 200px;
+      border: 2px solid #ccc;
+      padding: 5px;
+      margin-top: 10px;
+    }
+
+    a {
+      color: #0088cc;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #004d99;
+    }
+  </style>
+</head>
+<body>
+  <!-- HTML Content -->
+  <h1>Welcome to My Webpage</h1>
+  <p>Hello! This is my first webpage built using HTML, styled with CSS, and powered by a bit of JavaScript.</p>
+
+  <img src="image.jpeg" alt="Sample Image">
+
+  <p>Check out <a href="https://www.example.com" target="_blank">this awesome site</a> I like!</p>
+
+  <!-- JavaScript Interaction -->
+  <button onclick="showMessage()">Click Me</button>
+
+  <script>
+    function showMessage() {
+      alert("Hello there! Thanks for clicking the button.");
+    }
+  </script>
+</body>
+</html>
