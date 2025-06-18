@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact & To-Do App</title>
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-areas: 
+        "header header"
+        "nav nav"
+        "main aside"
+        "footer footer";
+      grid-template-columns: 3fr 1fr;
+      gap: 20px;
+    }
+
+    header {
+      grid-area: header;
+      background: #007BFF;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    nav {
+      grid-area: nav;
+      background: #ffffff;
+      padding: 10px;
+      display: flex;
+      justify-content: space-around;
+      border: 1px solid #ccc;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #007BFF;
+      font-weight: bold;
+    }
+
+    main {
+      grid-area: main;
+      background: #ffffff;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+
+    aside {
+      grid-area: aside;
+      background: #ffffff;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+
+    footer {
+      grid-area: footer;
+      background: #007BFF;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    /* Contact Form Styling */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #007BFF;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* To-Do List Styling */
+    #taskList {
+      list-style: none;
+      margin-top: 10px;
+      padding-left: 0;
+    }
+
+    #taskList li {
+      margin: 8px 0;
+      background: #e9ecef;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #taskList button {
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-areas:
+          "header"
+          "nav"
+          "main"
+          "aside"
+          "footer";
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      Contact & To-Do App
+    </header>
+
+    <nav>
+      <a href="#contact">Contact Form</a>
+      <a href="#todo">To-Do List</a>
+    </nav>
+
+    <main id="contact">
+      <h2>Contact Us</h2>
+      <form id="contactForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+
+        <button type="submit">Send Message</button>
+      </form>
+    </main>
+
+    <aside id="todo">
+      <h2>To-Do List</h2>
+      <input type="text" id="taskInput" placeholder="Add a task..." />
+      <button onclick="addTask()">Add Task</button>
+      <ul id="taskList"></ul>
+    </aside>
+
+    <footer>
+      &copy; 2025 Your Name. All rights reserved.
+    </footer>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Form validation
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!name || !email || !message) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      if (!emailPattern.test(email)) {
+        alert("Invalid email format.");
+        return;
+      }
+
+      alert("Message sent successfully!");
+      this.reset();
+    });
+
+    // To-do list logic
+    function addTask() {
+      const input = document.getElementById('taskInput');
+      const taskText = input.value.trim();
+      if (taskText === "") return;
+
+      const li = document.createElement('li');
+      li.textContent = taskText;
+
+      const btn = document.createElement('button');
+      btn.textContent = 'Remove';
+      btn.onclick = () => li.remove();
+
+      li.appendChild(btn);
+      document.getElementById('taskList').appendChild(li);
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
