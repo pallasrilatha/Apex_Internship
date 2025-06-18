@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Full Project Implementation</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; padding: 20px; }
+
+    header, section { background: #fff; margin: 20px auto; padding: 20px; border-radius: 10px; max-width: 1000px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+
+    h1, h2 { text-align: center; margin-bottom: 15px; color: #333; }
+
+    nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #007BFF;
+      font-weight: bold;
+    }
+
+    section > div, .task-row, .product {
+      margin-bottom: 10px;
+    }
+
+    input, button, select {
+      padding: 10px;
+      margin-top: 5px;
+      width: 100%;
+      max-width: 500px;
+      display: block;
+    }
+
+    ul { list-style-type: none; padding: 0; }
+    li { background: #eaeaea; margin: 5px 0; padding: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
+
+    button { background: #007BFF; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      input, button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>My Portfolio Website</h1>
+    <nav>
+      <a href="#about">About</a> |
+      <a href="#projects">Projects</a> |
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- 1. Portfolio Section -->
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Hello! I'm a frontend developer passionate about building responsive and interactive web applications using HTML, CSS, and JavaScript.</p>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <ul>
+      <li>To-Do App with Local Storage</li>
+      <li>Product Listing with Filters</li>
+      <li>Responsive Portfolio Site</li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <form onsubmit="event.preventDefault(); alert('Message Sent!'); this.reset();">
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Your Email" required />
+      <textarea placeholder="Your Message" rows="4" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- 2. To-Do List App with Local Storage -->
+  <section>
+    <h2>To-Do List (with localStorage)</h2>
+    <input type="text" id="taskInput" placeholder="Add a task..." />
+    <button onclick="addTask()">Add Task</button>
+    <ul id="taskList"></ul>
+  </section>
+
+  <!-- 3. Product Listing Page -->
+  <section>
+    <h2>Product Listing</h2>
+    <label>Filter by Category:</label>
+    <select id="categoryFilter" onchange="filterProducts()">
+      <option value="all">All</option>
+      <option value="clothing">Clothing</option>
+      <option value="electronics">Electronics</option>
+    </select>
+
+    <label>Sort by Price:</label>
+    <select id="priceSort" onchange="sortProducts()">
+      <option value="default">Default</option>
+      <option value="asc">Low to High</option>
+      <option value="desc">High to Low</option>
+    </select>
+
+    <div id="productList"></div>
+  </section>
+
+  <script>
+    // =============================
+    // 2. To-Do List with LocalStorage
+    // =============================
+    const taskInput = document.getElementById('taskInput');
+    const taskList = document.getElementById('taskList');
+
+    function loadTasks() {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      taskList.innerHTML = '';
+      tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.textContent = task;
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'X';
+        removeBtn.onclick = () => removeTask(index);
+        li.appendChild(removeBtn);
+        taskList.appendChild(li);
+      });
+    }
+
+    function addTask() {
+      const task = taskInput.value.trim();
+      if (task === '') return;
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      tasks.push(task);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      taskInput.value = '';
+      loadTasks();
+    }
+
+    function removeTask(index) {
+      const tasks = JSON.parse(localStorage.getItem('tasks'));
+      tasks.splice(index, 1);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      loadTasks();
+    }
+
+    loadTasks();
+
+    // =============================
+    // 3. Product Listing with Filter/Sort
+    // =============================
+    const products = [
+      { name: 'T-shirt', category: 'clothing', price: 20 },
+      { name: 'Laptop', category: 'electronics', price: 900 },
+      { name: 'Headphones', category: 'electronics', price: 100 },
+      { name: 'Jeans', category: 'clothing', price: 50 }
+    ];
+
+    function displayProducts(filteredProducts = products) {
+      const container = document.getElementById('productList');
+      container.innerHTML = '';
+      filteredProducts.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `<strong>${p.name}</strong> - $${p.price} <em>(${p.category})</em>`;
+        container.appendChild(div);
+      });
+    }
+
+    function filterProducts() {
+      const category = document.getElementById('categoryFilter').value;
+      const filtered = category === 'all' ? products : products.filter(p => p.category === category);
+      sortProducts(filtered);
+    }
+
+    function sortProducts(data = null) {
+      const sort = document.getElementById('priceSort').value;
+      let list = data || [...products];
+
+      if (sort === 'asc') list.sort((a, b) => a.price - b.price);
+      if (sort === 'desc') list.sort((a, b) => b.price - a.price);
+
+      displayProducts(list);
+    }
+
+    // Initial render
+    displayProducts();
+  </script>
+
+</body>
+</html>
