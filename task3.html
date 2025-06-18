@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task 3: Advanced Styling and JavaScript</title>
+  <style>
+    /* Base Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    section {
+      background: #fff;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 8px;
+      max-width: 800px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    /* Quiz Styles */
+    .quiz-question {
+      margin-bottom: 15px;
+    }
+
+    .quiz-question p {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .quiz-result {
+      margin-top: 10px;
+      font-weight: bold;
+      color: green;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* API Section */
+    #joke {
+      margin-top: 15px;
+      font-style: italic;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      section {
+        padding: 15px;
+        margin: 10px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Task 3: Advanced Styling and JavaScript</h1>
+
+  <!-- Responsive Design is already part of this layout -->
+
+  <!-- Interactive Quiz -->
+  <section>
+    <h2>JavaScript Quiz</h2>
+    <div class="quiz-question">
+      <p>1. What does DOM stand for?</p>
+      <input type="radio" name="q1" value="a"> Document Object Model<br>
+      <input type="radio" name="q1" value="b"> Data Output Method<br>
+    </div>
+
+    <div class="quiz-question">
+      <p>2. Which method is used to fetch data from an API?</p>
+      <input type="radio" name="q2" value="a"> getData()<br>
+      <input type="radio" name="q2" value="b"> fetch()<br>
+    </div>
+
+    <button onclick="submitQuiz()">Submit Answers</button>
+    <div class="quiz-result" id="quizResult"></div>
+  </section>
+
+  <!-- API Fetch Example -->
+  <section>
+    <h2>Random Joke (API Example)</h2>
+    <button onclick="fetchJoke()">Get a Joke</button>
+    <div id="joke">Click the button to load a random joke!</div>
+  </section>
+
+  <script>
+    // Quiz Logic
+    function submitQuiz() {
+      const q1 = document.querySelector('input[name="q1"]:checked');
+      const q2 = document.querySelector('input[name="q2"]:checked');
+      let score = 0;
+
+      if (q1 && q1.value === 'a') score++;
+      if (q2 && q2.value === 'b') score++;
+
+      const result = document.getElementById('quizResult');
+      result.textContent = `You scored ${score}/2`;
+    }
+
+    // API Fetch Logic (Joke)
+    function fetchJoke() {
+      fetch("https://icanhazdadjoke.com/", {
+        headers: { Accept: "application/json" }
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("joke").textContent = data.joke;
+      })
+      .catch(err => {
+        document.getElementById("joke").textContent = "Failed to load joke.";
+      });
+    }
+  </script>
+
+</body>
+</html>
